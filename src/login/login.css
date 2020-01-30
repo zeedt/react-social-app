@@ -1,0 +1,55 @@
+.wrapper {
+    margin-top: 120px;
+}
+
+.login-container {
+    height: 400px;
+			width: 350px;
+			margin: 0px auto;
+			background: #f39c12;
+			position: relative;
+			display: flex;
+			justify-content: center;
+			flex-direction: column;
+			padding: 10px;
+			/* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+			-webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+			-moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+			border-radius: 5px;
+}
+body {
+    background-color: #60a3bc !important;
+}
+
+.brand_logo_container {
+    position: absolute;
+    height: 170px;
+    width: 170px;
+    top: -75px;
+    border-radius: 50%;
+    background: #60a3bc;
+    padding: 10px;
+    text-align: center;
+}
+.brand_logo {
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.ficon {
+    background-color: #c0392b !important;
+}
+.loginButton {
+    background-color: #c0392b !important;
+    float: left !important;
+}
+.userHelpDiv {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.loginForm {
+    margin-top: 60px;
+}
