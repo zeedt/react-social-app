@@ -1,0 +1,27 @@
+
+.add-post-header {
+    padding: 10px 10px 5px;
+    border-radius: 10px;
+}
+
+.add-post-card-body {
+    padding: 0px, 3px !important;
+}
+
+.add-post-card-header {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+}
+
+.add-post-card  {
+    margin-top: 10px;
+}
+
+.user-image {
+    clip-path: circle(40%);
+}
+.post-submit-button {
+    background-color: #d0321b !important;
+    border-color: #d0321b !important;
+    float: right;
+}

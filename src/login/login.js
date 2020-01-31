@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './login.css'
 import '../bootstrap/bootstrap.min.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faKey } from '@fortawesome/free-solid-svg-icons';
 import LoginService from './login.service';
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 
 class Login extends React.Component {
 
@@ -21,6 +21,12 @@ class Login extends React.Component {
         this.setState({
             [event.target.name]: event.target.value
         });
+    }
+
+    componentWillMount() {
+        if (localStorage.getItem('access_token') != null) {
+            this.props.history.push('/')
+        }
     }
 
     login = async (e) => {
@@ -76,4 +82,4 @@ class Login extends React.Component {
     }
 }
 
-export default Login;
+export default withRouter(Login);
