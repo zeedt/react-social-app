@@ -25,3 +25,17 @@
     border-color: #d0321b !important;
     float: right;
 }
+
+.post:hover {
+    background: #333333 !important;
+}
+
+.post {
+    cursor: pointer !important;
+}
+
+.input_user {
+    border-left: 0px !important;
+    border-right: 0px !important;
+}
+

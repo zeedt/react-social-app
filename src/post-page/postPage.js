@@ -6,6 +6,7 @@ import { Card,  Button } from 'react-bootstrap'
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import ReduxThunkFunctions from '../redux/thunk-functions'
+import PostItem from './post-item';
 
 
 
@@ -45,6 +46,8 @@ componentWillMount() {
                         <Button className='post-submit-button'  >Submit</Button>
                     </Card.Body>
                 </Card>
+
+                {this.props.posts.map(post=><PostItem key={post} post={post} className ='post' />)}
             </div>
 
     )

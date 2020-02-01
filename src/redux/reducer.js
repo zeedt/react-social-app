@@ -1,4 +1,4 @@
-import loadPosts from '../default/postPageService';
+import loadPosts from '../post-page/postPageService';
 import ReducerActions from './reducer-action'
 
 const reducer =  (state={posts : [], currentPostId : null, comments : [], loadingPosts : false, }, action) => {
