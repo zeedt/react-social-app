@@ -1,12 +1,14 @@
 import loadPosts from '../post-page/postPageService';
 import ReducerActions from './reducer-action'
 
-const reducer =  (state={posts : [], currentPostId : null, comments : [], loadingPosts : false, }, action) => {
+const reducer =  (state={posts : [], currentPostId : null, comments : [], loadingPosts : false, lastId : 0 }, action) => {
     console.log(action.type)
-    console.log("Posts " + state.posts)
     switch(action.type) {
         case ("RECEIVE_POSTS"):
-            return Object.assign({}, state, {posts:state.posts.concat(action.data)});
+            if (action.data.length > 0) {
+                return Object.assign({}, state, {posts:state.posts.concat(action.data), lastId : action.data[(action.data.length -1)].id, loadingPosts : false});
+            }
+            return Object.assign({}, state, {posts:state.posts.concat(action.data), loadingPosts : false});
         case ("SET_ABOUT_TO_LOAD_POST_TRUE"):
             console.log('updating loading post status to true');
             return Object.assign({}, state, {loadingPosts : true});
