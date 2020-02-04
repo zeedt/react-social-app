@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import ReduxThunkFunctions from '../redux/thunk-functions'
 import PostItem from './post-item';
 import debounce from 'lodash.debounce';
+import Users from '../user/user';
 
 
 
@@ -65,7 +66,11 @@ class DefaultPage extends React.Component {
     render() {
         return (
 
-            <div className="container col-md-6">
+            <div className="col-md-12">
+                <div className=" col-md-3 chatDiv mydivs">
+                <Users />
+            </div>
+            <div className=" col-md-6 mydivs postDiv">
 
                 <Card className='add-post-card'>
                     <Card.Header className='add-post-card-header'>Create post</Card.Header>
@@ -83,6 +88,13 @@ class DefaultPage extends React.Component {
                 {this.props.posts.map(post => <PostItem key={post.id} post={post} className='post' />)}
 
                 {(this.props.loadingPosts) ? <div>Loading....</div> : null}
+
+            </div>
+
+            
+            <div className=" col-md-3 mydivs">
+                
+            </div>
 
             </div>
 

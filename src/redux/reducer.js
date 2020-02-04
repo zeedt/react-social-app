@@ -1,7 +1,7 @@
 import loadPosts from '../post-page/postPageService';
 import ReducerActions from './reducer-action'
 
-const reducer =  (state={posts : [], currentPostId : null, comments : [], loadingPosts : false, lastId : 0 }, action) => {
+const reducer =  (state={posts : [], currentPostId : null, comments : [], loadingPosts : false, lastId : 0, loadingUsers : false, users : [] }, action) => {
     console.log(action.type)
     switch(action.type) {
         case ("RECEIVE_POSTS"):
@@ -15,6 +15,14 @@ const reducer =  (state={posts : [], currentPostId : null, comments : [], loadin
         case ("DONE_LOADING_POSTS"):
             console.log('updating loading post status to false');
             return Object.assign({}, state, {loadingPosts : false});
+            case ("DONE_LOADING_USERS"):
+                console.log('Done loading users');
+                return Object.assign({}, state, {loadingUsers : false});
+            case ("LOADING_USERS"):
+                console.log('Loading users');
+                return Object.assign({}, state, {loadingUsers : true});
+            case 'RECEIVE_USERS':
+                return Object.assign({}, state, {loadingUsers:false, users:action.data});
         default:
             console.log("In default")
             return state

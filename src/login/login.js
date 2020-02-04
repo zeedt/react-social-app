@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faKey } from '@fortawesome/free-solid-svg-icons';
 import LoginService from './login.service';
 import { Link, withRouter } from 'react-router-dom'
+import { Button, Spinner } from 'react-bootstrap';
 
 class Login extends React.Component {
 
@@ -12,7 +13,8 @@ class Login extends React.Component {
         super(props);
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            loading: false
         }
         this.handleInputChange = this.handleInputChange.bind(this);
     }
@@ -30,6 +32,9 @@ class Login extends React.Component {
     }
 
     login = async (e) => {
+        this.setState({
+            loading: true
+        });
         e.preventDefault();
         console.dir(this.state);
         const response = await LoginService.login(this.state);
@@ -38,6 +43,9 @@ class Login extends React.Component {
             this.props.history.push('/home')
         } else {
             alert(response.message);
+            this.setState({
+                loading: false
+            });
         }
     }
 
@@ -66,8 +74,19 @@ class Login extends React.Component {
                                 </div>
 
                                 <div className="input-group">
-                                    <input type="submit" value='Login' className='form-control btn btn-danger md-col-12 pull-right loginButton' />
+                                    <Button variant="primary" className='form-control btn btn-danger md-col-12 pull-right loginButton' disabled={this.state.loading} onClick={this.login}>
+                                        {this.state.loading ? <Spinner
+                                            as="span"
+                                            animation="grow"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                        /> : null}
+                                        {this.state.loading ? <span>Signing in...</span> : <span>Login</span>}
+                                    </Button>
                                 </div>
+
+
                             </form>
                             <div className='userHelpDiv'>
                                 Don't have an account? <Link to="/signup">Sign Up</Link> <p></p>

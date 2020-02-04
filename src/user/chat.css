@@ -1,0 +1,22 @@
+/* Chat Container Style */
+.chatDiv {
+    margin-top: 10px;
+    height: 338px;
+}
+
+.user-list-div {
+    padding: 10px;
+    border-bottom: solid 1px #e8e8e8;
+}
+
+.user-list-card-body {
+    padding-top: 0px !important;
+}
+
+.user-list-card-header {
+    padding-top: 0px !important;
+}
+
+.user-chat-image {
+    clip-path: circle(10);
+}
