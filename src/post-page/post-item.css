@@ -1,0 +1,43 @@
+.post-item-container {
+    margin-top: 15px;
+}
+
+.userImage {
+    clip-path: circle(40);
+    /* clear: left; */
+    width: 40px !important;
+    height: 40px;
+    /* flex-basis: 40px; */
+}
+
+.poster-name { 
+    margin-left: 15px;
+    color: rgb(0, 132, 255);
+    font-size: 15px;
+}
+
+.flexdev { 
+    display: flex;
+}
+
+ .image-text {
+    flex: 1;
+}
+
+.myimage {
+
+    width: 40px;
+    height: 40px;
+}
+
+.post-content {
+    margin-top: 5px;
+}
+
+.post {
+    cursor: pointer;
+}
+
+.post:hover {
+    background-color: #000000 !important;
+}

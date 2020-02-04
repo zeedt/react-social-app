@@ -1,0 +1,12 @@
+const ReducerActions = {
+
+    LOAD_POSTS : 'LOAD_POSTS',
+    SET_ABOUT_TO_LOAD_POST_TRUE : 'SET_ABOUT_TO_LOAD_POST_TRUE',
+    RECEIVE_POSTS : 'SET_ABOUT_TO_LOAD_POST_TRUE',
+    DONE_LOADING_POSTS : 'DONE_LOADING_POSTS'
+
+}
+
+
+
+export default ReducerActions;
