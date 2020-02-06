@@ -8,7 +8,12 @@ const getHeader = () => {
     return {Authorization : 'Bearer ' + localStorage.getItem('access_token')}
 }
 
-
+const checkErrorAndRedirectIfNecessary = (error) => {
+    if (error.response.status == 401) {
+        localStorage.removeItem('access_token');
+        window.location.replace('/login');
+    }
+}
 const ReduxThunkFunctions = {
 
     loadPosts : (pageNo=0) => {
@@ -26,10 +31,7 @@ const ReduxThunkFunctions = {
                 }).then(res=> {
                     dispatch({type : "RECEIVE_POSTS", data:res.data})
                 }).catch((error, data)=> {
-                    if (error.response.status == 401) {
-                        localStorage.removeItem('access_token');
-                        window.location.replace('/login');
-                    }
+                    checkErrorAndRedirectIfNecessary(error);
                     dispatch({type: ReducerActions.DONE_LOADING_POSTS})
                 });
             } catch (e) {
@@ -54,16 +56,30 @@ const ReduxThunkFunctions = {
             })
             .catch(err => {
                 console.error(err);
-                if (err.response.status == 401) {
-                    localStorage.removeItem('access_token');
-                    window.location.replace('/login');
-                }
+                checkErrorAndRedirectIfNecessary(err);
                 dispatch({type: "DONE_LOADING_USERS"});
             });
         }
         
-    }
+    },
 
+    loadCurrentUserInfo : () => {
+        return (dispatch, getState) => {
+            try {
+                axios
+                .get(`${BASE_URL}my-info`, {
+                    headers : {Authorization : `Bearer ${localStorage.getItem('access_token')}`}
+                }).then(res=> {
+                    dispatch({type:'SET_CURRENT_USER', data : res.data});
+                }).catch(err => {
+                    console.log("Error occurred due to ", err);
+                    checkErrorAndRedirectIfNecessary(err);
+                });
+            } catch(error) {
+
+            }
+        }
+    }
 
 }
 

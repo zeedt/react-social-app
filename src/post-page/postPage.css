@@ -54,3 +54,46 @@ body {
     height: auto;
 }
 
+
+.chat {
+    border: 1px solid #999;
+    display: inline-block;
+    vertical-align: bottom;
+    position: relative;
+    margin: 0 5px;
+    background-color: white;
+    pointer-events: auto;
+  }
+  .title {
+    padding: 0.5em;
+    background-color: blue;
+    color: white;
+  }
+  .text {
+    padding: 10px;
+  }
+
+  .collapse-view {
+    position: fixed;
+    margin-bottom: 10px;
+    /* z-index: 99; */
+  }
+
+  .collapsing {
+    -webkit-transition: none;
+    transition: none;
+    display: none;
+}
+
+.bottomChatDiv {
+    height: 250px;
+    max-width: 300px;
+    min-width: 300px;
+    overflow-y: scroll;
+    
+}
+
+.user-list-div {
+    max-height: 400px;
+    overflow-y: scroll;
+}

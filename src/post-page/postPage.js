@@ -12,6 +12,7 @@ import Users from '../user/user';
 
 
 
+
 class DefaultPage extends React.Component {
 
     constructor(props) {
@@ -19,12 +20,12 @@ class DefaultPage extends React.Component {
         this.state = {
             error : false,
             isLoading : false,
-            hasMore : true
+            hasMore : true,
+            open : false,
         }
         window.onscroll = debounce(() => {
             
             const {
-                loadPosts,
                 state : { error,
                 isLoading,
                 hasMore },
@@ -67,6 +68,8 @@ class DefaultPage extends React.Component {
         return (
 
             <div className="col-md-12">
+
+        
                 <div className=" col-md-3 chatDiv mydivs">
                 <Users />
             </div>
@@ -97,6 +100,8 @@ class DefaultPage extends React.Component {
             </div>
 
             </div>
+
+            
 
         )
     }
