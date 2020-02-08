@@ -9,10 +9,16 @@ const getHeader = () => {
 }
 
 const checkErrorAndRedirectIfNecessary = (error) => {
-    if (error.response.status == 401) {
-        localStorage.removeItem('access_token');
+    try{
+        if (error.response.status == 401) {
+            localStorage.removeItem('access_token');
+            window.location.replace('/login');
+        }
+    } catch(error) {
+        console.log("Error occurred during redirection");
         window.location.replace('/login');
     }
+    
 }
 const ReduxThunkFunctions = {
 

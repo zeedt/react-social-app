@@ -6,39 +6,51 @@ import ReduxThunkFunctions from '../redux/thunk-functions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import SocketIOClient from 'socket.io-client';
-import axios from 'axios';
-const BASE_URL = 'http://localhost:3001/'
 
 class Users extends Component {
 
-
     constructor(props) {
         super(props);
+        this.userMap = new Map();
+        this.distinctUser = [];
         props.loadUsers();
         this.state = {
             open: false,
             socketEndpointUrl: 'localhost:3001',
-            onlineUsers : []
+            onlineUsers: []
         };
         this.socket = SocketIOClient(this.state.socketEndpointUrl);
-        this.socket.on('all-users', data => {
-            console.log(JSON.stringify(data));
-            this.setState({
-                onlineUsers : data
-            })
+
+        this.socket.on('connection-received', () => {
+            this.socket.emit('join', {username : window.localStorage.username, first_name : window.localStorage.first_name, last_name : window.localStorage.last_name});
         })
+
+        this.socket.on('all-users', data => {
+            console.log("as at " + new Date() + JSON.stringify(data));
+            this.distinctUser = [];
+            const map = new Map();
+            for (const item of data) {
+                console.log("iterating")
+                if (!map.has(item.username)) {
+                    console.log("Adding");
+                    map.set(item.username, true);    // set any value to Map
+                    this.distinctUser.push({
+                        username: item.username,
+                        name: item.name
+                    });
+                }
+            }
+            this.setState({
+                onlineUsers: this.distinctUser
+            })
+        });
+
     }
 
-    componentDidMount() {
-        axios
-            .get(`${BASE_URL}my-info`, {
-                headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` }
-            }).then(res => {
-                console.log('USER ' + JSON.stringify(res.data));
-                const data = { username: res.data.username, name: (res.data.first_name + ' ' + res.data.last_name) };
-                this.socket.emit('join', data);
-                this.props.setCurrentUserInfo(data);
-            });
+    getDistinctUserFromOnlineUserSockets = () => {
+        this.state.onlineUsers.map(user => {
+            this.userMap.set(user.username, user.username);
+        });
     }
 
     render() {
@@ -123,12 +135,6 @@ const mapDispatchToProps = dispatch => {
     return {
         loadUsers: async () => {
             await dispatch(ReduxThunkFunctions.loadUsers());
-        },
-        loadCurrentUserInfo: async (userData) => {
-            dispatch(ReduxThunkFunctions.loadCurrentUserInfo());
-        },
-        setCurrentUserInfo: async (userData) => {
-            dispatch({ type: 'SET_CURRENT_USER', data: userData });
         }
     }
 }
