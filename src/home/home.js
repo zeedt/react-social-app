@@ -1,7 +1,7 @@
 import './home.css'
 import React from 'react';
 import { Route, BrowserRouter, Switch, Redirect } from 'react-router-dom'
-import DefaultPage from '../post-page/postPage';
+import DefaultPage from '../default-page/DefaultPage';
 import AppNavbar from '../navbar/navbar';
 import Login from '../login/login'
 import Signup from '../signup/signup';
