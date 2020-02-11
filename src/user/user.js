@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Card, Collapse } from 'react-bootstrap';
 import './chat.css'
-import { connect } from 'react-redux';
-import ReduxThunkFunctions from '../redux/thunk-functions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import SocketIOClient from 'socket.io-client';
@@ -13,7 +11,6 @@ class Users extends Component {
         super(props);
         this.userMap = new Map();
         this.distinctUser = [];
-        // props.loadUsers();
         this.state = {
             open: false,
             socketEndpointUrl: 'localhost:3001',
@@ -29,7 +26,6 @@ class Users extends Component {
         })
 
         this.socket.on('all-users', data => {
-            console.log("as at " + new Date() + JSON.stringify(data));
             this.distinctUser = [];
             const map = new Map();
             for (const item of data) {
@@ -127,9 +123,9 @@ class Users extends Component {
                             <div className="title">{this.state.currentUserChattingWith}</div>
                             <div className="bottomChatDiv text" id='bottomChatDiv'>
                                 {this.state.currentUserChattingWith === '' ? null : this.state.chats[this.state.currentUserChattingWith].map(chat => <span>
-                                {window.localStorage.getItem('username') === chat.fromUsername ? <p style={{backgroundColor:'#e8e8e8', float:'right', marginLeft:'35px', borderRadius:'3px', padding:'3px'}}>
+                                {window.localStorage.getItem('username') === chat.fromUsername ? <p style={{backgroundColor:'#e8e8e8', float:'right', marginLeft:'35px', borderRadius:'3px', padding:'3px', display:'block'}}>
                                     {chat.message}</p> : 
-                                <p style={{backgroundColor:'#e8e8e8', float:'left', marginRight:'35px', borderRadius:'3px', padding:'3px'}}>{chat.message}</p>}
+                                <p style={{backgroundColor:'#e8e8e8', float:'left', marginRight:'35px', borderRadius:'3px', padding:'3px', display:'block'}}>{chat.message}</p>}
                                 </span>
                                 )}
                             </div>
@@ -151,20 +147,4 @@ class Users extends Component {
 
 }
 
-const mapStateToProps = state => {
-    return {
-        users: state.users,
-        myInfo: state.loggedInUserInfo
-    }
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-        loadUsers: async () => {
-            await dispatch(ReduxThunkFunctions.loadUsers());
-        }
-    }
-}
-
 export default Users;
-// export default connect(mapStateToProps, mapDispatchToProps)(Users);

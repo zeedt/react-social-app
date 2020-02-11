@@ -20,7 +20,6 @@ class Home extends React.Component {
                 <AppNavbar loadLogin={this.props.loadLogin}/>
                             <Switch>
                             <Route exact path='/' component={DefaultPage} />
-                            <Route exact path='/page1' component={AppNavbar} />
                             <Route path='/login' component={Login} />
                             <Route path='/signup' component={Signup} /> 
                             <Route component={DefaultPage} />

@@ -30,7 +30,6 @@ class AppNavbar extends React.Component {
                             <Navbar.Collapse>
                                 <Nav className="mr-auto">
                                     <NavLink to="/page">Home</NavLink>
-                                    <NavLink to="/page1">Home</NavLink>
                                 </Nav>
                                 <Form inline>
                                     <InputGroup>
