@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Post component test should be able to load post component successfully 1`] = `
+<div
+  className="col-md-12"
+>
+  <div
+    className="add-post-card card"
+  >
+    <div
+      className="add-post-card-header card-header"
+    >
+      Create post
+    </div>
+    <div
+      className="add-post-card-body card-body"
+    >
+      <div
+        className="input-group mb-3"
+      >
+        <div
+          className="input-group-append"
+        >
+          <img
+            alt="Nothing"
+            className="user-image"
+            height={50}
+            src="https://cdn.freebiesupply.com/logos/large/2x/pinterest-circle-logo-png-transparent.png"
+            width={50}
+          />
+        </div>
+        <textarea
+          className="form-control input_user"
+          name="post"
+          placeholder="Write a post here...."
+        />
+      </div>
+      <button
+        className="post-submit-button btn btn-primary"
+        disabled={false}
+        type="button"
+      >
+        Submit
+      </button>
+    </div>
+  </div>
+</div>
+`;
