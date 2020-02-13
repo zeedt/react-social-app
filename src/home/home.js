@@ -5,6 +5,7 @@ import DefaultPage from '../default-page/DefaultPage';
 import AppNavbar from '../navbar/navbar';
 import Login from '../login/login'
 import Signup from '../signup/signup';
+import UserInfo from '../user-info/user-info';
 
 
 
@@ -22,6 +23,7 @@ class Home extends React.Component {
                             <Route exact path='/' component={DefaultPage} />
                             <Route path='/login' component={Login} />
                             <Route path='/signup' component={Signup} /> 
+                            <Route path='/info' component={UserInfo} />
                             <Route component={DefaultPage} />
                             </Switch>
                 </BrowserRouter>

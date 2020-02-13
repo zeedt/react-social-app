@@ -47,6 +47,7 @@ exports[`User component test should be able to load page successfully 1`] = `
           />
           <div
             className="input-group-append"
+            onClick={[Function]}
           >
             <span
               className="input-group-text ficon"
@@ -58,7 +59,6 @@ exports[`User component test should be able to load page successfully 1`] = `
                 data-icon="arrow-right"
                 data-prefix="fas"
                 focusable="false"
-                onClick={[Function]}
                 role="img"
                 style={Object {}}
                 viewBox="0 0 448 512"

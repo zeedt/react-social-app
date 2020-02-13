@@ -111,7 +111,9 @@ class Users extends Component {
                         {this.state.onlineUsers.map(user =>
                             <div key={user.username} className='user-list-div' onClick={() => { this.openOrCloseChat(user.username) }} aria-controls="example-fade-text"
                                 aria-expanded={this.state.open}>
-                                <img src='image/logo.png' height={30} width={30} className='user-chat-image' alt='ImageAbsent' /> {user.name}
+                                {/* <img src='image/logo.png' height={30} width={30} className='user-chat-image' alt='ImageAbsent' /> */}
+                                <span className='online-span'></span>
+                                 {user.name}
 
                             </div>
                         )}
@@ -122,19 +124,19 @@ class Users extends Component {
                         <div className="chat">
                             <div className="title">{this.state.currentUserChattingWith}</div>
                             <div className="bottomChatDiv text" id='bottomChatDiv'>
-                                {this.state.currentUserChattingWith === '' ? null : this.state.chats[this.state.currentUserChattingWith].map(chat => <span>
-                                {window.localStorage.getItem('username') === chat.fromUsername ? <p style={{backgroundColor:'#e8e8e8', float:'right', marginLeft:'35px', borderRadius:'3px', padding:'3px', display:'block'}}>
-                                    {chat.message}</p> : 
-                                <p style={{backgroundColor:'#e8e8e8', float:'left', marginRight:'35px', borderRadius:'3px', padding:'3px', display:'block'}}>{chat.message}</p>}
-                                </span>
+                                {this.state.currentUserChattingWith === '' ? null : this.state.chats[this.state.currentUserChattingWith].map(chat => <div style={{marginBottom:'5px !important'}} >
+                                {window.localStorage.getItem('username') === chat.fromUsername ? <div className='col-12' style={{backgroundColor:'#e8e8e8', textAlign:'right',  borderRadius:'3px', display:'block', marginTop:'5px'}}>
+                                    {chat.message}</div> : 
+                                <div className='col-12' style={{backgroundColor:'#e8e8e8', textAlign:'left', borderRadius:'3px', display:'block', marginTop:'5px'}}>{chat.message}</div>}
+                                </div>
                                 )}
                             </div>
                             <div className="">
                                 <div className="input-group mb-3">
 
                                     <input type='text' name="message" value={this.state.message} className="form-control " onChange={this.handleInputChange} placeholder="Type message here..." />
-                                    <div className="input-group-append">
-                                        <span className="input-group-text ficon" ><FontAwesomeIcon icon={faArrowRight} color='white' onClick={this.sendMessage} /></span>
+                                    <div className="input-group-append" onClick={this.sendMessage}>
+                                        <span className="input-group-text ficon" ><FontAwesomeIcon icon={faArrowRight} color='white'  /></span>
                                     </div>
                                 </div>
                             </div>

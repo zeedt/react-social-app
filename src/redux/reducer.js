@@ -34,6 +34,12 @@ const reducer = (state = stateInitial, action) => {
         case 'SET_CURRENT_USER':
             console.log("SETTING CURRENT USER " + JSON.stringify(action.data));
             return Object.assign({}, state, { loggedInUserInfo: action.data });
+        case 'RESET_LAST_ID':
+            return Object.assign({}, state, {lastId: 0});
+        case 'PREPEND_POST_FROM_LOGGED_IN_USER':
+            var currentPosts = state.posts;
+            currentPosts.unshift(action.data);
+            return Object.assign({}, state, {posts: currentPosts});
         default:
             console.log("In default")
             return state

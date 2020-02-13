@@ -30,6 +30,11 @@ exports[`Login page Test should be able to render login page successfully 1`] = 
             className="input-group mb-3"
           >
             <div
+              className="errorDiv col-12"
+            >
+              
+            </div>
+            <div
               className="input-group-append"
             >
               <span

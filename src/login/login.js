@@ -15,7 +15,8 @@ class Login extends React.Component {
         this.state = {
             username: '',
             password: '',
-            loading: false
+            loading: false,
+            errorMessage : '',
         }
         this.handleInputChange = this.handleInputChange.bind(this);
     }
@@ -45,9 +46,12 @@ class Login extends React.Component {
             window.localStorage.setItem('first_name', response.access_token.user.first_name);
             window.localStorage.setItem('last_name', response.access_token.user.last_name);
             // store.dispatch({type:'SET_CURRENT_USER', data : response.access_token.user});
-            this.props.history.push('/home')
+            // this.props.history.push('/home')
+            window.location.href = '/'
         } else {
-            alert(response.message);
+            this.setState(({
+                errorMessage : response.message
+            }));
             this.setState({
                 loading: false
             });
@@ -65,6 +69,9 @@ class Login extends React.Component {
                         <div className=''>
                             <form className='col-10 offset-1 loginForm' onSubmit={this.login}>
                                 <div className="input-group mb-3">
+
+                                    <div className='errorDiv col-12'>{this.state.errorMessage}</div>
+
                                     <div className="input-group-append">
                                         <span className="input-group-text ficon"><FontAwesomeIcon icon={faUser} color='white' /></span>
                                     </div>

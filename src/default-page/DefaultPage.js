@@ -19,7 +19,7 @@ class DefaultPage extends React.Component {
                 </div>
                 <div className=" col-md-6 mydivs postDiv">
 
-                    <PostPage />
+                    <PostPage history={this.props.history} />
 
                 </div>
 

@@ -1,12 +1,12 @@
 import './post-page.css';
 import React from 'react';
-
-
-import { Card, Button } from 'react-bootstrap'
+import PostPageService from './postPageService';
+import { Card, Button, Spinner } from 'react-bootstrap'
 import { connect } from 'react-redux';
 import ReduxThunkFunctions from '../redux/thunk-functions'
 import PostItem from './post-item';
 import debounce from 'lodash.debounce';
+import axios from 'axios';
 
 
 
@@ -20,7 +20,15 @@ class PostPage extends React.Component {
             isLoading: false,
             hasMore: true,
             open: false,
+            postContent: '',
+            myProfilePicture: '',
+            posting: false
         }
+        this.loadUserInfo();
+        
+        let userAgentString =  navigator.userAgent; 
+        this.chromeAgent = userAgentString.indexOf("Chrome") > -1;
+        this.safariAgent =  userAgentString.indexOf("Safari") > -1; 
         window.onscroll = debounce(() => {
 
             const {
@@ -32,10 +40,11 @@ class PostPage extends React.Component {
             console.log("Loading posts " + props.loadingPosts);
             console.log(`bounce with isloading ${isLoading}, hasMore ${hasMore} and error ${error}`)
             if (error || props.loadingPosts || !hasMore) return;
-
             // Checks that the page has scrolled to the bottom
+            // window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight
             if (
-                window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight
+                (document.documentElement.offsetHeight + document.documentElement.scrollTop === document.documentElement.scrollHeight && this.safariAgent) ||
+                (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight )
             ) {
                 if (props.loadingPosts) {
                     console.log("Data already loading");
@@ -43,10 +52,13 @@ class PostPage extends React.Component {
                 }
                 props.loadPosts();
             } else {
-                console.log("nooooo")
+                console.log("nooooo " + " innerheight plus scrolltop " + (document.documentElement.offsetHeight + document.documentElement.scrollTop) + " document " + document.documentElement.scrollHeight)
             }
 
         }, 100);
+
+        this.submitPost = this.submitPost.bind(this);
+        this.handlePostContentChange = this.handlePostContentChange.bind(this);
 
     }
 
@@ -62,27 +74,71 @@ class PostPage extends React.Component {
         this.props.loadPosts();
     }
 
+    submitPost = async () => {
+        this.setState({
+            posting: true
+        });
+        const result = await PostPageService.addPosts(this.state.postContent);
+        if (result) {
+            await this.props.prependNewPost({ content: result.data.content, id: result.data.id, createdAt: result.data.createdAt, user: { first_name: window.localStorage.first_name, last_name: window.localStorage.last_name, display_picture : this.state.myProfilePicture } });
+            this.setState({
+                posting: false,
+                postContent: ''
+            });
+        }
+    }
+
+    loadUserInfo = () => {
+        axios
+            .get("http://localhost:3001/my-info", { headers: { Authorization: 'Bearer ' + localStorage.getItem('access_token') } })
+            .then(res => {
+                if (res.data.display_picture !== undefined && res.data.display_picture !== null) {
+                    this.setState({ myProfilePicture: 'http://localhost:3001/' + res.data.display_picture });
+                }
+            })
+            .catch(err => console.error(err));
+    }
+
+    handlePostContentChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    getPictureOrAlternatePicture = () => {
+        return (this.state.myProfilePicture === '' || this.state.myProfilePicture === undefined) ? 'image/no-image.png' : this.state.myProfilePicture;
+    }
     render() {
         return (
 
             <div className="col-md-12">
 
-                    <Card className='add-post-card'>
-                        <Card.Header className='add-post-card-header'>Create post</Card.Header>
-                        <Card.Body className='add-post-card-body'>
-                            <div className="input-group mb-3">
-                                <div className="input-group-append">
-                                    <img src='https://cdn.freebiesupply.com/logos/large/2x/pinterest-circle-logo-png-transparent.png' height={50} width={50} alt='Nothing' className='user-image' />
-                                </div>
-                                <textarea name="post" className="form-control input_user" placeholder="Write a post here...." />
+                <Card className='add-post-card'>
+                    <Card.Header className='add-post-card-header'>Create post</Card.Header>
+                    <Card.Body className='add-post-card-body'>
+                        <div className="input-group mb-3">
+                            <div className="input-group-append">
+                                <img src={this.getPictureOrAlternatePicture()} height={50} width={50} className='user-image' />
                             </div>
-                            <Button className='post-submit-button'  >Submit</Button>
-                        </Card.Body>
-                    </Card>
+                            <textarea name="postContent" className="form-control input_user" value={this.state.postContent} onChange={this.handlePostContentChange} placeholder="Write a post here...." />
+                        </div>
+                        <Button className='post-submit-button' onClick={this.submitPost} disabled={this.state.posting} >
+                            {this.state.posting ? <Spinner
+                                as="span"
+                                animation="grow"
+                                size="sm"
+                                role="status"
+                                aria-hidden="true"
+                            /> : null}
+                            {this.state.posting ? <span>Posting...</span> : <span>Submit</span>}
 
-                    {this.props.posts.map(post => <PostItem key={post.id} post={post} className='post' />)}
+                        </Button>
+                    </Card.Body>
+                </Card>
 
-                    {(this.props.loadingPosts) ? <div>Loading....</div> : null}
+                {this.props.posts.map(post => <PostItem key={post.id} post={post} className='post' />)}
+
+                {(this.props.loadingPosts) ? <div>Loading....</div> : null}
 
             </div>
 
@@ -104,6 +160,12 @@ const mapDispatchToProps = (dispatch) => {
         loadPosts: async () => {
             console.log('about to load posts');
             await dispatch(ReduxThunkFunctions.loadPosts());
+        },
+        resetLastIdFetched: () => {
+            dispatch({ type: 'RESET_LAST_ID' });
+        },
+        prependNewPost: (post) => {
+            dispatch({ type: 'PREPEND_POST_FROM_LOGGED_IN_USER', data: post })
         }
     }
 }

@@ -22,25 +22,29 @@ exports[`Post component test should be able to load post component successfully 
           className="input-group-append"
         >
           <img
-            alt="Nothing"
             className="user-image"
             height={50}
-            src="https://cdn.freebiesupply.com/logos/large/2x/pinterest-circle-logo-png-transparent.png"
+            src="image/no-image.png"
             width={50}
           />
         </div>
         <textarea
           className="form-control input_user"
-          name="post"
+          name="postContent"
+          onChange={[Function]}
           placeholder="Write a post here...."
+          value=""
         />
       </div>
       <button
         className="post-submit-button btn btn-primary"
         disabled={false}
+        onClick={[Function]}
         type="button"
       >
-        Submit
+        <span>
+          Submit
+        </span>
       </button>
     </div>
   </div>

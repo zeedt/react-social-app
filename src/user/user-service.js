@@ -22,6 +22,13 @@ const UserService = {
             console.log("Error occurred due to ", e);
         }
         
+    },
+
+    logout : () => {
+        axios
+          .get(`${BASE_URL}logout`, {headers : {Authorization : `Bearer ${localStorage.getItem('access_token')}`}})
+          .then(res => {console.log("User successfully logged out")})
+          .catch(err => console.error(err));
     }
 
 }
