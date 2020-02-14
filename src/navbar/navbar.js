@@ -1,16 +1,28 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import './navbar.css';
-import { Navbar, InputGroup, Nav, FormControl, Form, NavDropdown } from 'react-bootstrap'
+import { Navbar, InputGroup, Nav, FormControl, Form, NavDropdown, Overlay, ButtonToolbar, Popover } from 'react-bootstrap'
 import { NavLink, withRouter } from 'react-router-dom'
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import UserService from '../user/user-service';
+import { debounce } from "lodash";
+import axios from 'axios';
+const BASE_URL = 'http://localhost:3001/'
 
 class AppNavbar extends React.Component {
 
     constructor(props) {
         super(props);
         console.log('pro ' + this.props.loadLogin);
+        this.ref = React.createRef();
+        this.state = {
+            showMore: false,
+            target: undefined,
+            searchFilter: '',
+            users: []
+        };
+
+        this.loadUsersByFilter = this.loadUsersByFilter.bind(this);
     }
 
     componentWillMount() {
@@ -32,6 +44,56 @@ class AppNavbar extends React.Component {
     loadInfoPage = () => {
         this.props.history.push('/info');
     }
+
+    searchField = (e) => {
+        console.log("Done")
+        this.setState({
+            target: e.target,
+            showMore: true
+        })
+    }
+    loadUsersByFilters = (e)=> {
+        console.log(e.target.value);
+        this.setState({
+            searchFilter : e.target.value,
+            target: e.target
+        });
+    }
+
+    getImageFullPath = (dp) => {
+        return "http://localhost:3001/"+dp
+    }
+    fetchUserInformation =  debounce(() => {
+        
+            console.log("yyyy")
+            if (this.state.searchFilter === undefined || this.state.searchFilter.length < 3) { return; }
+            axios
+                .get(`${BASE_URL}filter-users/${this.state.searchFilter}`)
+                .then(res => {
+                    console.dir(this.state.target.name)
+                    if (res.data.length < 1) { return; }
+                    this.setState({
+                        users: res.data,
+                        showMore: true
+                    });
+
+                })
+                .catch(err => console.error(err));
+        }, 3000);
+    
+        setTarget = (e) => {
+            
+        }
+
+    loadUsersByFilter = (e) => {
+        this.setState({
+            searchFilter : e.target.value,
+            target : e.target
+        });
+        this.fetchUserInformation();
+};
+
+
     render() {
         return this.props.loadLogin ? null : (
             <div className='col-md-12 header-super-container'>
@@ -50,12 +112,31 @@ class AppNavbar extends React.Component {
                                     <FormControl
                                         placeholder="Username"
                                         aria-label="Username"
+                                        name="searchFilter"
+                                        onChange={this.loadUsersByFilter}
+                                        value={this.state.searchFilter}
                                     />
-                                    <InputGroup.Append>
-                                        <InputGroup.Text id="basic-addon1"><FontAwesomeIcon icon={faSearch} /></InputGroup.Text>
-                                    </InputGroup.Append>
+                                    <ButtonToolbar ref={this.ref}>
+                                        <Overlay
+                                            show={this.state.showMore}
+                                            target={this.state.target}
+                                            placement="bottom"
+                                            container={this.ref.current}
+                                            containerPadding={30}
+                                        >
+                                            <Popover id="popover-contained">
+                                                <Popover.Title as="h3">Users</Popover.Title>
+                                                <Popover.Content className='user-list'>
+        {this.state.users.map(user=><div><img src={this.getImageFullPath(user.display_picture)} height={20} width={20} alt="" />{user.first_name} {user.last_name}</div>)}
+                                                    
+                                            </Popover.Content>
+                                            </Popover>
+                                        </Overlay>
+                                    </ButtonToolbar>
+
                                 </InputGroup>
                             </Form>
+
                             {/* <Nav>
                                     <NavLink to="#"><img src='image/logo.png' height={30} width={30} /></NavLink>
                                 </Nav> */}

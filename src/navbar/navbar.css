@@ -15,3 +15,10 @@
 .header-super-container {
     background-color: #e8e8e8;
 }
+
+.user-list {
+    max-height: 150px;
+    overflow-y: scroll;
+    max-width: 200px;
+    min-width: 200px;
+}
