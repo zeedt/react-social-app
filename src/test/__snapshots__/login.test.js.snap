@@ -13,7 +13,7 @@ exports[`Login page Test should be able to render login page successfully 1`] = 
       <img
         alt="Logo"
         className="brand_logo"
-        src="https://cdn.freebiesupply.com/logos/large/2x/pinterest-circle-logo-png-transparent.png"
+        src="/image/app-logo-image"
       />
     </div>
     <div

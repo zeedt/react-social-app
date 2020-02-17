@@ -45,6 +45,8 @@ class Login extends React.Component {
             window.localStorage.setItem('username', response.access_token.user.username);
             window.localStorage.setItem('first_name', response.access_token.user.first_name);
             window.localStorage.setItem('last_name', response.access_token.user.last_name);
+            window.localStorage.setItem('email', response.access_token.user.email);
+            window.localStorage.setItem('display_picture', response.access_token.user.display_picture);
             // store.dispatch({type:'SET_CURRENT_USER', data : response.access_token.user});
             // this.props.history.push('/home')
             window.location.href = '/'
@@ -63,7 +65,7 @@ class Login extends React.Component {
             <div className='wrapper'>
                 <div className='login-container justify-content-center'>
                     <div className="brand_logo_container">
-                        <img src="https://cdn.freebiesupply.com/logos/large/2x/pinterest-circle-logo-png-transparent.png" className="brand_logo" alt="Logo" />
+                        <img src="/image/app-logo-image.png" className="brand_logo" alt="Logo" />
                     </div>
                     <div className='login-box'>
                         <div className=''>

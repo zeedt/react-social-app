@@ -97,3 +97,14 @@ body {
     max-height: 400px;
     overflow-y: scroll;
 }
+
+.user-info-div {
+    margin-top: 10px;
+    background-color: white;
+    border-radius: 5px;
+
+}
+
+.profile-picture {
+    margin-bottom: 10px;
+}

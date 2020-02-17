@@ -7,13 +7,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import UserService from '../user/user-service';
 import { debounce } from "lodash";
 import axios from 'axios';
+import UserSearchList from './user-search-list';
 const BASE_URL = 'http://localhost:3001/'
 
 class AppNavbar extends React.Component {
 
     constructor(props) {
         super(props);
-        console.log('pro ' + this.props.loadLogin);
         this.ref = React.createRef();
         this.state = {
             showMore: false,
@@ -28,7 +28,7 @@ class AppNavbar extends React.Component {
     componentWillMount() {
         console.log("Component will mount");
         if (this.props.loadLogin) {
-            this.props.history.push('/login')
+            this.props.history.push({pathname : '/login/:', state : {ool : 'olam'}}, {name : 'ola', state : {ool : 'olam'}})
         }
     }
 
@@ -52,46 +52,53 @@ class AppNavbar extends React.Component {
             showMore: true
         })
     }
-    loadUsersByFilters = (e)=> {
+    loadUsersByFilters = (e) => {
         console.log(e.target.value);
         this.setState({
-            searchFilter : e.target.value,
+            searchFilter: e.target.value,
             target: e.target
         });
     }
 
     getImageFullPath = (dp) => {
-        return "http://localhost:3001/"+dp
+        return "http://localhost:3001/" + dp
     }
-    fetchUserInformation =  debounce(() => {
-        
-            console.log("yyyy")
-            if (this.state.searchFilter === undefined || this.state.searchFilter.length < 3) { return; }
-            axios
-                .get(`${BASE_URL}filter-users/${this.state.searchFilter}`)
-                .then(res => {
-                    console.dir(this.state.target.name)
-                    if (res.data.length < 1) { return; }
-                    this.setState({
-                        users: res.data,
-                        showMore: true
-                    });
 
-                })
-                .catch(err => console.error(err));
-        }, 3000);
-    
-        setTarget = (e) => {
-            
-        }
+    viewUserProfile = (username) => {
+        this.setState({
+            showMore : false
+        })
+        this.props.history.push('/profile/'+username);
+    }
+    fetchUserInformation = debounce(() => {
+
+        console.log("yyyy")
+        if (this.state.searchFilter === undefined || this.state.searchFilter.length < 3) { return; }
+        axios
+            .get(`${BASE_URL}filter-users/${this.state.searchFilter}`)
+            .then(res => {
+                console.dir(this.state.target.name)
+                if (res.data.length < 1) { return; }
+                this.setState({
+                    users: res.data,
+                    showMore: true
+                });
+
+            })
+            .catch(err => console.error(err));
+    }, 3000);
+
+    setTarget = (e) => {
+
+    }
 
     loadUsersByFilter = (e) => {
         this.setState({
-            searchFilter : e.target.value,
-            target : e.target
+            searchFilter: e.target.value,
+            target: e.target
         });
         this.fetchUserInformation();
-};
+    };
 
 
     render() {
@@ -100,7 +107,7 @@ class AppNavbar extends React.Component {
                 <div className='container col-md-6 header-container' >
                     <Navbar expand='lg' bg='light'>
                         <Navbar.Brand>
-                            <img src='logo192.png' height={30} width={30} alt='not available' />
+                            <img src='/image/app-logo-image.png' height={30} width={30} alt='not available' />
                         </Navbar.Brand>
                         <Navbar.Toggle aria-controls='basic-navbar-bar' />
                         <Navbar.Collapse>
@@ -127,9 +134,11 @@ class AppNavbar extends React.Component {
                                             <Popover id="popover-contained">
                                                 <Popover.Title as="h3">Users</Popover.Title>
                                                 <Popover.Content className='user-list'>
-        {this.state.users.map(user=><div><img src={this.getImageFullPath(user.display_picture)} height={20} width={20} alt="" />{user.first_name} {user.last_name}</div>)}
-                                                    
-                                            </Popover.Content>
+                                                    <div >{this.state.users.map(user => 
+                                                    <div onClick={()=>{this.viewUserProfile(user.username)}}><UserSearchList key={user.username} first_name={user.first_name} last_name={user.last_name} display_picture={user.display_picture} /> </div>)}
+                                                    </div>
+
+                                                </Popover.Content>
                                             </Popover>
                                         </Overlay>
                                     </ButtonToolbar>

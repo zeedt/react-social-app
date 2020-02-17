@@ -22,3 +22,12 @@
     max-width: 200px;
     min-width: 200px;
 }
+
+.user-search-list-item {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.user-search-list-item-image {
+    border-radius: 15px;
+}
