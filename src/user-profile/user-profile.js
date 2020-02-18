@@ -19,7 +19,9 @@ class UserProfile extends React.Component {
         }
         const username = props.match.params.username;
         axios
-            .get(`${BASE_URL}find-user/${username}`)
+            .get(`${BASE_URL}find-user/${username}`, {
+                headers : {Authorization : 'Bearer ' + localStorage.getItem('access_token')}
+            })
             .then(res => {
                 this.setState({
                     userInfo: res.data,

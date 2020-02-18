@@ -31,3 +31,6 @@
 .user-search-list-item-image {
     border-radius: 15px;
 }
+.user-search-list-item {
+    cursor: pointer;
+}

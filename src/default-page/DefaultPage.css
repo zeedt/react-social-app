@@ -106,5 +106,15 @@ body {
 }
 
 .profile-picture {
+    margin: 0 auto;
     margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.image-upload-form {
+    margin-bottom: 20px;
+}
+
+.image-input {
+    cursor: pointer;
 }

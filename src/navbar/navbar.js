@@ -75,7 +75,9 @@ class AppNavbar extends React.Component {
         console.log("yyyy")
         if (this.state.searchFilter === undefined || this.state.searchFilter.length < 3) { return; }
         axios
-            .get(`${BASE_URL}filter-users/${this.state.searchFilter}`)
+            .get(`${BASE_URL}filter-users/${this.state.searchFilter}`, {
+                headers : {Authorization : 'Bearer ' + localStorage.getItem('access_token')}
+            })
             .then(res => {
                 console.dir(this.state.target.name)
                 if (res.data.length < 1) { return; }
@@ -135,7 +137,7 @@ class AppNavbar extends React.Component {
                                                 <Popover.Title as="h3">Users</Popover.Title>
                                                 <Popover.Content className='user-list'>
                                                     <div >{this.state.users.map(user => 
-                                                    <div onClick={()=>{this.viewUserProfile(user.username)}}><UserSearchList key={user.username} first_name={user.first_name} last_name={user.last_name} display_picture={user.display_picture} /> </div>)}
+                                                    <div className='user-search-list-item' onClick={()=>{this.viewUserProfile(user.username)}}><UserSearchList key={user.username} first_name={user.first_name} last_name={user.last_name} display_picture={user.display_picture} /> </div>)}
                                                     </div>
 
                                                 </Popover.Content>
