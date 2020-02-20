@@ -10,7 +10,8 @@ This repository contains the React codebase for the app. This react project make
 
 1. ## Signup page
 
-![alt text] (/screenshots/signup-page.png)
+![alt text] (/screenshots/signup-page.png )
+Format: ![Alt Text](url)
 
 
 
