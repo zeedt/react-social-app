@@ -15,3 +15,22 @@
 .header-super-container {
     background-color: #e8e8e8;
 }
+
+.user-list {
+    max-height: 150px;
+    overflow-y: scroll;
+    max-width: 200px;
+    min-width: 200px;
+}
+
+.user-search-list-item {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.user-search-list-item-image {
+    border-radius: 15px;
+}
+.user-search-list-item {
+    cursor: pointer;
+}

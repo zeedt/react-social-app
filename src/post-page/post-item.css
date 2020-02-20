@@ -3,11 +3,9 @@
 }
 
 .userImage {
-    clip-path: circle(40);
-    /* clear: left; */
     width: 40px !important;
     height: 40px;
-    /* flex-basis: 40px; */
+    border-radius: 20px;
 }
 
 .poster-name { 

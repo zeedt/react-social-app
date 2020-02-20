@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faKey, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import LoginService from '../login/login.service';
 import {Link} from 'react-router-dom';
+import {Button, Spinner} from 'react-bootstrap';
 
 class Signup extends React.Component {
 
@@ -18,6 +19,7 @@ class Signup extends React.Component {
             last_name: '',
             gender: '',
             email: '',
+            loading : false,
             signUpResponse : {successful : false, message:''}
         }
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -30,8 +32,10 @@ class Signup extends React.Component {
     }
 
     signup = async (e) => {
-        e.preventDefault();
         console.dir(this.state);
+        this.setState({
+            loading: true
+        });
         const response = await LoginService.signUp(this.state);
         console.dir(response);
         if (response.successful) {
@@ -48,6 +52,9 @@ class Signup extends React.Component {
         } else {
             this.setState({signUpResponse:{successful : false, message : response.message}})
         }
+        this.setState({
+            loading: false
+        });
     }
 
     render() {
@@ -55,11 +62,11 @@ class Signup extends React.Component {
             <div className='wrapper'>
                 <div className='signup-container justify-content-center'>
                     <div className="brand_logo_container">
-                        <img src="https://cdn.freebiesupply.com/logos/large/2x/pinterest-circle-logo-png-transparent.png" className="brand_logo" alt="Logo" />
+                        <img src="/image/app-logo-image.png" className="brand_logo" alt="Logo" />
                     </div>
                     <div className='signup-box'>
                         <div className=''>
-                            <form className='col-10 offset-1 signupForm' onSubmit={this.signup}>
+                            <form className='col-10 offset-1 signupForm' >
                                 <div className='errorDiv'>
                                     {this.state.signUpResponse.message}
                                 </div>
@@ -112,7 +119,17 @@ class Signup extends React.Component {
                                     <input type='password' name="password2" className="form-control input_user" value={this.state.password2} onChange={this.handleInputChange} placeholder="Confirm password" />
                                 </div>
                                 <div className="input-group">
-                                    <input type="submit" value='SignUp' className='form-control btn btn-danger md-col-12 pull-right signUpButton' />
+                                    <Button onClick={this.signup} className='form-control btn btn-danger md-col-12 pull-right signUpButton'>
+                                    {this.state.loading ? <Spinner
+                                            as="span"
+                                            animation="grow"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                        /> : null}
+                                        {this.state.loading ? <span>Registering user...</span> : <span>SignUp</span>}
+                                    </Button>
+                                    {/* <input type="submit" value='SignUp' className='form-control btn btn-danger md-col-12 pull-right signUpButton' /> */}
                                 </div>
                             </form>
                             <div className='userHelpDiv'>

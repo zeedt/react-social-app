@@ -6,6 +6,7 @@ import { faUser, faKey } from '@fortawesome/free-solid-svg-icons';
 import LoginService from './login.service';
 import { Link, withRouter } from 'react-router-dom'
 import { Button, Spinner } from 'react-bootstrap';
+import store from '../redux/store';
 
 class Login extends React.Component {
 
@@ -14,7 +15,8 @@ class Login extends React.Component {
         this.state = {
             username: '',
             password: '',
-            loading: false
+            loading: false,
+            errorMessage : '',
         }
         this.handleInputChange = this.handleInputChange.bind(this);
     }
@@ -38,11 +40,21 @@ class Login extends React.Component {
         e.preventDefault();
         console.dir(this.state);
         const response = await LoginService.login(this.state);
-        if (response.access_token) {
-            window.localStorage.setItem('access_token', response.access_token);
-            this.props.history.push('/home')
+        if (response.access_token && response.access_token.token_string) {
+            window.localStorage.setItem('access_token', response.access_token.token_string);
+            window.localStorage.setItem('username', response.access_token.user.username);
+            window.localStorage.setItem('first_name', response.access_token.user.first_name);
+            window.localStorage.setItem('last_name', response.access_token.user.last_name);
+            window.localStorage.setItem('email', response.access_token.user.email);
+            window.localStorage.setItem('display_picture', response.access_token.user.display_picture);
+            window.localStorage.setItem('gender', response.access_token.user.gender);
+            // store.dispatch({type:'SET_CURRENT_USER', data : response.access_token.user});
+            // this.props.history.push('/home')
+            window.location.href = '/'
         } else {
-            alert(response.message);
+            this.setState(({
+                errorMessage : response.message
+            }));
             this.setState({
                 loading: false
             });
@@ -54,12 +66,15 @@ class Login extends React.Component {
             <div className='wrapper'>
                 <div className='login-container justify-content-center'>
                     <div className="brand_logo_container">
-                        <img src="https://cdn.freebiesupply.com/logos/large/2x/pinterest-circle-logo-png-transparent.png" className="brand_logo" alt="Logo" />
+                        <img src="/image/app-logo-image.png" className="brand_logo" alt="Logo" />
                     </div>
                     <div className='login-box'>
                         <div className=''>
                             <form className='col-10 offset-1 loginForm' onSubmit={this.login}>
                                 <div className="input-group mb-3">
+
+                                    <div className='errorDiv col-12'>{this.state.errorMessage}</div>
+
                                     <div className="input-group-append">
                                         <span className="input-group-text ficon"><FontAwesomeIcon icon={faUser} color='white' /></span>
                                     </div>

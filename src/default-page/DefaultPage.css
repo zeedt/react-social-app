@@ -1,0 +1,120 @@
+body {
+    /* overflow-y: hidden; */
+}
+
+.mydivs {
+
+    float: right;
+    
+}
+
+.add-post-header {
+    padding: 10px 10px 5px;
+    border-radius: 10px;
+}
+
+.add-post-card-body {
+    padding: 0px, 3px !important;
+}
+
+.add-post-card-header {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+}
+
+.add-post-card  {
+    margin-top: 10px;
+}
+
+.user-image {
+    clip-path: circle(40%);
+}
+.post-submit-button {
+    background-color: #d0321b !important;
+    border-color: #d0321b !important;
+    float: right;
+}
+
+.post:hover {
+    background: #333333 !important;
+}
+
+.post {
+    cursor: pointer !important;
+}
+
+.input_user {
+    border-left: 0px !important;
+    border-right: 0px !important;
+}
+
+.postDiv {
+    overflow-y: scroll !important;
+    width: 200px;
+    height: auto;
+}
+
+
+.chat {
+    border: 1px solid #999;
+    display: inline-block;
+    vertical-align: bottom;
+    position: relative;
+    margin: 0 5px;
+    background-color: white;
+    pointer-events: auto;
+  }
+  .title {
+    padding: 0.5em;
+    background-color: blue;
+    color: white;
+  }
+  .text {
+    padding: 10px;
+  }
+
+  .collapse-view {
+    position: fixed;
+    margin-bottom: 10px;
+    /* z-index: 99; */
+  }
+
+  .collapsing {
+    -webkit-transition: none;
+    transition: none;
+    display: none;
+}
+
+.bottomChatDiv {
+    height: 250px;
+    max-width: 300px;
+    min-width: 300px;
+    overflow-y: scroll;
+    
+}
+
+.user-list-div {
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+.user-info-div {
+    margin-top: 10px;
+    background-color: white;
+    border-radius: 5px;
+
+}
+
+.profile-picture {
+    margin: 0 auto;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.image-upload-form {
+    margin-bottom: 20px;
+}
+
+.image-input {
+    cursor: pointer;
+}
