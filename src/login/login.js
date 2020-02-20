@@ -47,6 +47,7 @@ class Login extends React.Component {
             window.localStorage.setItem('last_name', response.access_token.user.last_name);
             window.localStorage.setItem('email', response.access_token.user.email);
             window.localStorage.setItem('display_picture', response.access_token.user.display_picture);
+            window.localStorage.setItem('gender', response.access_token.user.gender);
             // store.dispatch({type:'SET_CURRENT_USER', data : response.access_token.user});
             // this.props.history.push('/home')
             window.location.href = '/'
