@@ -1,6 +1,6 @@
 # Mini social app
 
-This is a mini social app built using Javascript technologies. The frontend framework used for this project is React and Nodejs is used for the backend. 
+This is a mini social app built using Javascript technologies. The frontend framework used for this project is React and Nodejs is used for the backend (https://github.com/zeedt/express-social-app-service). 
 
 This application contains series of actions like login, signup, adding a post, comment, chatting, user search and viewing user profile.
 
