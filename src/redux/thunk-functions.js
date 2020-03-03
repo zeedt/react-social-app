@@ -1,7 +1,7 @@
 import axios from 'axios';
 import store from './store';
 import ReducerActions from './reducer-action';
-const BASE_URL = 'http://localhost:3001/';
+const BASE_URL = process.env.REACT_APP_SOCIAL_APP_BASE_URL;
 const pageSize = 10;
 
 const getHeader = () => {

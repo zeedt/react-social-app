@@ -4,7 +4,7 @@ import {} from 'react-bootstrap'
 class UserSearchList extends React.Component {
 
     getImageFullPath = (dp) => {
-        return dp === undefined || dp === '' || dp===null ? 'image/no-image.png' : "http://localhost:3001/"+dp;
+        return dp === undefined || dp === '' || dp===null ? 'image/no-image.png' : process.env.REACT_APP_SOCIAL_APP_BASE_URL+dp;
     }
 
     render() {

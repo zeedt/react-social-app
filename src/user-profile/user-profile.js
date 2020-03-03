@@ -3,7 +3,7 @@ import { Table, Image } from 'react-bootstrap'
 import './user-profile.css';
 import { withRouter } from 'react-router';
 import axios from 'axios';
-const BASE_URL = 'http://localhost:3001/';
+const BASE_URL = process.env.REACT_APP_SOCIAL_APP_BASE_URL;
 
 class UserProfile extends React.Component {
 
@@ -39,7 +39,7 @@ class UserProfile extends React.Component {
     }
 
     getImageFullPath = (dp) => {
-        return dp === undefined || dp === '' || dp===null ? 'image/no-image.png' : "http://localhost:3001/"+dp;
+        return dp === undefined || dp === '' || dp===null ? 'image/no-image.png' : dp;
     }
 
     render() {

@@ -6,7 +6,7 @@ import './post-item.css'
 const PostItem = ({ post }) => {
 
     const getProfilePictureOrAlternate = (display_picture) => {
-        return (display_picture !== undefined && display_picture !== null && display_picture !== '') ? (!display_picture.includes('http://')) ? `http://localhost:3001/${display_picture}` : display_picture : 'image/no-image.png';
+        return (display_picture !== undefined && display_picture !== null && display_picture !== '') ? (!display_picture.includes('http://')) ? `${display_picture}` : display_picture : 'image/no-image.png';
     }
 
 

@@ -26,7 +26,7 @@ class DefaultPage extends React.Component {
     }
 
     getImageFullPath = (dp) => {
-        return dp === undefined || dp === '' || dp===null ? 'image/no-image.png' : "http://localhost:3001/"+dp;
+        return dp === undefined || dp === '' || dp===null ? 'image/no-image.png' : dp;
     }
 
     updateDisplayPicture = (e)=> {
@@ -68,7 +68,7 @@ class DefaultPage extends React.Component {
                 </div>
 
                 <div className=" col-md-3 mydivs user-info-div">
-                <Image className='profile-picture' src = {this.getImageFullPath(localStorage.display_picture)} width={200} height={200} roundedCircle />
+                <Image className='profile-picture' src = {this.state.display_picture} width={200} height={200} roundedCircle />
                 <form onSubmit={this.updateDisplayPicture} className='image-upload-form'>
 
                 <input type="file" name='file' className='form-control image-input' onChange={this.handleFileChange} placeholder='Update display picture' /> <p/>

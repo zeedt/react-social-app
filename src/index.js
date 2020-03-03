@@ -7,6 +7,8 @@ import store from './redux/store';
 import Home from './home/home';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+console.dir(process.env.REACT_APP_SOCIAL_APP_BASE_URL);
+console.dir(process.env.REACT_APP_SOCIAL_APP_S3_URL);
 const loadLogin = (window.localStorage.getItem('access_token') == null) ? true : false;
 
 ReactDOM.render(

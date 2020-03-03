@@ -38,7 +38,6 @@ class PostPage extends React.Component {
 
             } = this;
             console.log("Loading posts " + props.loadingPosts);
-            console.log(`bounce with isloading ${isLoading}, hasMore ${hasMore} and error ${error}`)
             if (error || props.loadingPosts || !hasMore) return;
             // Checks that the page has scrolled to the bottom
             // window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight
@@ -51,9 +50,7 @@ class PostPage extends React.Component {
                     return;
                 }
                 props.loadPosts();
-            } else {
-                console.log("nooooo " + " innerheight plus scrolltop " + (document.documentElement.offsetHeight + document.documentElement.scrollTop) + " document " + document.documentElement.scrollHeight)
-            }
+            } else {}
 
         }, 100);
 
@@ -90,10 +87,10 @@ class PostPage extends React.Component {
 
     loadUserInfo = () => {
         axios
-            .get("http://localhost:3001/my-info", { headers: { Authorization: 'Bearer ' + localStorage.getItem('access_token') } })
+            .get(`${process.env.REACT_APP_SOCIAL_APP_BASE_URL}my-info`, { headers: { Authorization: 'Bearer ' + localStorage.getItem('access_token') } })
             .then(res => {
                 if (res.data.display_picture !== undefined && res.data.display_picture !== null) {
-                    this.setState({ myProfilePicture: 'http://localhost:3001/' + res.data.display_picture });
+                    this.setState({ myProfilePicture: res.data.display_picture });
                 }
             })
             .catch(err => console.error(err));

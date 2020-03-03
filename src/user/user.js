@@ -13,7 +13,7 @@ class Users extends Component {
         this.distinctUser = [];
         this.state = {
             open: false,
-            socketEndpointUrl: 'localhost:3001',
+            socketEndpointUrl: process.env.REACT_APP_SOCIAL_APP_BASE_URL,
             onlineUsers: [],
             currentUserChattingWith: '',
             message: '',
