@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const LOGIN_URL = 'http://localhost:3001/oauth/token?grant_type=password';
-const SIGNUP_URL = 'http://localhost:3001/signup';
+const LOGIN_URL = `${process.env.REACT_APP_SOCIAL_APP_BASE_URL}oauth/token?grant_type=password`;
+const SIGNUP_URL = `${process.env.REACT_APP_SOCIAL_APP_BASE_URL}signup`;
 const CLIENT_ID = 'zeed';
 const CLIENT_SECRET = 'password';
 const DEFAULT_ERROR_MESSAGE = 'An error occurred. Kindly contact admin or try again';

@@ -8,7 +8,7 @@ import UserService from '../user/user-service';
 import { debounce } from "lodash";
 import axios from 'axios';
 import UserSearchList from './user-search-list';
-const BASE_URL = 'http://localhost:3001/'
+const BASE_URL = `${process.env.REACT_APP_SOCIAL_APP_BASE_URL}`
 
 class AppNavbar extends React.Component {
 
