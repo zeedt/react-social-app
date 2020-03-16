@@ -30,7 +30,7 @@
     "socket.io-client": "^2.3.0"
   },
   "scripts": {
-    "start": "REACT_APP_SOCIAL_APP_BASE_URL=http://social-app-backend-env.eba-66nmdmui.us-east-1.elasticbeanstalk.com/ REACT_APP_SOCIAL_APP_S3_URL=https://social-app-bucket1.s3.amazonaws.com/social-app-images/ react-scripts start",
+    "start": "REACT_APP_SOCIAL_APP_BASE_URL=http://localhost:3001/ REACT_APP_SOCIAL_APP_S3_URL=https://social-app-bucket1.s3.amazonaws.com/social-app-images/ react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

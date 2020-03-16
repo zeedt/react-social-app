@@ -4,6 +4,8 @@ import './chat.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import SocketIOClient from 'socket.io-client';
+import UserService from './user-service';
+import debounce from 'lodash.debounce';
 
 class Users extends Component {
 
@@ -17,7 +19,8 @@ class Users extends Component {
             onlineUsers: [],
             currentUserChattingWith: '',
             message: '',
-            chats: {}
+            chats: {},
+            loadingChat : false
         };
         this.socket = SocketIOClient(this.state.socketEndpointUrl);
 
@@ -55,7 +58,7 @@ class Users extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.socket.on('private-message-received', data => {
             var elem = document.getElementById('bottomChatDiv');
-            elem.scrollTop = elem.scrollHeight ;
+            elem.scrollTop = elem.scrollHeight;
             console.log("Private message " + JSON.stringify(data));
             if (data.toUsername !== window.localStorage.getItem('username') || data.fromUsername !== window.localStorage.getItem('username')) {
                 const user = data.toUsername !== window.localStorage.getItem('username') ? data.toUsername : data.fromUsername;
@@ -75,24 +78,74 @@ class Users extends Component {
         });
     }
 
+    processRawChat = (rawChat) => {
+        const processedChat = [];
+        rawChat.map( chat=> {
+            processedChat.push({fromUsername : chat.sender, toUsername : chat.receiver, message : chat.content, id : chat.id});
+        });
+
+        return processedChat;
+    }
+
+    updateChat = (username, fetchedChat, firstOpening=false) => {
+        console.log("Updating chat");
+        fetchedChat = this.processRawChat(fetchedChat);
+        var userMessage = this.state.chats[username];
+        userMessage = (userMessage === undefined) ? [] : userMessage;
+        var concatenatedChat = fetchedChat.concat(Array.from(userMessage));
+        let newChats = Object.assign({}, this.state.chats, { [username]: concatenatedChat });
+        this.setState({
+            chats: newChats,
+            loadingChat : false
+        });
+        if (firstOpening) {
+            document.getElementById('bottomChatDiv').scrollTop = document.getElementById('bottomChatDiv').scrollHeight;
+        } else { 
+            document.getElementById('bottomChatDiv').scrollBy(0,200);
+        }
+    }
     openOrCloseChat = (username) => {
         console.log("Opening chat for " + username);
         this.setState({
             currentUserChattingWith: username,
             open: !this.state.open
         });
+        var leastId = (this.state.chats[username] != undefined && this.state.chats[username].length > 0)
+         ? this.state.chats[username][0].id : 0;
+
+         if (this.state.loadingChat) {
+            return;
+        }
+
+        if (this.state.chats[username] == undefined || this.state.chats[username].length < 15) {
+            UserService.loadChatForUser(leastId, username, this.updateChat, true );
+        }
+
+        document.getElementById('bottomChatDiv').onscroll = debounce(() => {
+            if (document.getElementById('bottomChatDiv').scrollTop === 0) {
+                if (this.state.loadingChat) {
+                    return;
+                }
+                this.setState({loadingChat : true});
+                leastId = (this.state.chats[username] != undefined && this.state.chats[username].length > 0)
+                ? this.state.chats[username][0].id : 0;
+                console.log("Least id is " + leastId);
+                UserService.loadChatForUser(leastId, username, this.updateChat );
+            }
+        }, 100);
     }
 
     sendMessage = () => {
         if (this.state.message === undefined || this.state.message === '') { return; }
         const messageObject = {
             message: this.state.message,
-            fromUsername: window.localStorage.username,
-            toUsername: this.state.currentUserChattingWith
+            to: this.state.currentUserChattingWith
         };
 
-        this.socket.emit('private-message-sent', messageObject);
+        // this.socket.emit('private-message-sent', messageObject);
+        UserService.sendMessage(messageObject);
         this.setState({ message: '' });
+        document.getElementById('bottomChatDiv').scrollTop = document.getElementById('bottomChatDiv').scrollHeight;
     }
 
     handleInputChange = (e) => {
@@ -113,7 +166,7 @@ class Users extends Component {
                                 aria-expanded={this.state.open}>
                                 {/* <img src='image/logo.png' height={30} width={30} className='user-chat-image' alt='ImageAbsent' /> */}
                                 <span className='online-span'></span>
-                                 {user.name}
+                                {user.name}
 
                             </div>
                         )}
@@ -122,12 +175,12 @@ class Users extends Component {
                 <Collapse in={this.state.open} className='collapse-view'>
                     <div id="example-fade-text">
                         <div className="chat">
-                            <div className="title">{this.state.currentUserChattingWith}</div>
+                            <div className="title" onClick={()=>this.setState({open : false})}>{this.state.currentUserChattingWith}</div>
                             <div className="bottomChatDiv text" id='bottomChatDiv'>
-                                {this.state.currentUserChattingWith === '' ? null : this.state.chats[this.state.currentUserChattingWith].map(chat => <div style={{marginBottom:'5px !important'}} >
-                                {window.localStorage.getItem('username') === chat.fromUsername ? <div className='col-12' style={{backgroundColor:'#e8e8e8', textAlign:'right',  borderRadius:'3px', display:'block', marginTop:'5px'}}>
-                                    {chat.message}</div> : 
-                                <div className='col-12' style={{backgroundColor:'#e8e8e8', textAlign:'left', borderRadius:'3px', display:'block', marginTop:'5px'}}>{chat.message}</div>}
+                                {this.state.currentUserChattingWith === '' ? null : this.state.chats[this.state.currentUserChattingWith].map(chat => <div style={{ marginBottom: '5px !important' }} >
+                                    {window.localStorage.getItem('username') === chat.fromUsername ? <div className='col-12' style={{ backgroundColor: '#e8e8e8', textAlign: 'right', borderRadius: '3px', display: 'block', marginTop: '5px' }}>
+                                        {chat.message}</div> :
+                                        <div className='col-12' style={{ backgroundColor: '#e8e8e8', textAlign: 'left', borderRadius: '3px', display: 'block', marginTop: '5px' }}>{chat.message}</div>}
                                 </div>
                                 )}
                             </div>
@@ -136,7 +189,7 @@ class Users extends Component {
 
                                     <input type='text' name="message" value={this.state.message} className="form-control " onChange={this.handleInputChange} placeholder="Type message here..." />
                                     <div className="input-group-append" onClick={this.sendMessage}>
-                                        <span className="input-group-text ficon" ><FontAwesomeIcon icon={faArrowRight} color='white'  /></span>
+                                        <span className="input-group-text ficon" ><FontAwesomeIcon icon={faArrowRight} color='white' /></span>
                                     </div>
                                 </div>
                             </div>
