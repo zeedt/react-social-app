@@ -70,7 +70,7 @@ const PostItem = ({ post }) => {
                                                 />}
 
                                                 {attachment.endsWith(".mp4") &&
-                                                    <video description="Beamer" controls className="d-block w-100" id={"videoPlayer" + index} muted="muted" preload="metadata">
+                                                    <video  controls className="d-block w-100" id={"videoPlayer" + index} muted="muted" preload="metadata">
                                                         <source src={attachment} type="video/mp4" />
                                                     </video>
                                                 }
