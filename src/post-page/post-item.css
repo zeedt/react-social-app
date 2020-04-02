@@ -39,3 +39,7 @@
 .post:hover {
     background-color: #000000 !important;
 }
+.attachment-div {
+    display: block;
+    margin-top: 20px;
+}

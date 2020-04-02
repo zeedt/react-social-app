@@ -1,7 +1,7 @@
 import './post-page.css';
 import React from 'react';
 import PostPageService from './postPageService';
-import { Card, Button, Spinner } from 'react-bootstrap'
+import { Card, Button, Spinner, Alert } from 'react-bootstrap'
 import { connect } from 'react-redux';
 import ReduxThunkFunctions from '../redux/thunk-functions'
 import PostItem from './post-item';
@@ -22,7 +22,8 @@ class PostPage extends React.Component {
             open: false,
             postContent: '',
             myProfilePicture: '',
-            posting: false
+            posting: false,
+            selectedFiles : []
         }
         this.loadUserInfo();
         
@@ -84,7 +85,36 @@ class PostPage extends React.Component {
             });
         }
     }
+    addPostWithAttachmentIfAny = async (e)=> {
+        e.preventDefault();
+        this.setState({
+            posting: true
+        });
+        var formData = new FormData();
+        console.log(this.state.selectedFiles);
+        for(let i = 0; i< this.state.selectedFiles.length; i++) {
+            console.log("Appending");
+            formData.append('files', this.state.selectedFiles[i])
+        }
+        formData.append('content', this.state.postContent);
+        console.log(formData);
 
+        const result = await PostPageService.addPostWithAttachment(formData);
+        if (result) {
+            await this.props.prependNewPost({ attachments: result.data.attachments, content: result.data.content, id: result.data.id, createdAt: result.data.createdAt, user: { first_name: window.localStorage.first_name, last_name: window.localStorage.last_name, display_picture : this.state.myProfilePicture } });
+            this.setState({
+                posting: false,
+                postContent: ''
+            });
+            document.getElementById('files').value= null;
+        } else {
+            alert("Error occurred during file upload. Kindly retry");
+            this.setState({
+                posting: false,
+                postContent: ''
+            });
+        }
+    }
     loadUserInfo = () => {
         axios
             .get(`${process.env.REACT_APP_SOCIAL_APP_BASE_URL}my-info`, { headers: { Authorization: 'Bearer ' + localStorage.getItem('access_token') } })
@@ -101,7 +131,9 @@ class PostPage extends React.Component {
             [e.target.name]: e.target.value
         })
     }
-
+    handleFileChange = (e) => {
+        this.setState({selectedFiles : e.target.files});
+    }
     getPictureOrAlternatePicture = () => {
         return (this.state.myProfilePicture === '' || this.state.myProfilePicture === undefined) ? 'image/no-image.png' : this.state.myProfilePicture;
     }
@@ -119,7 +151,11 @@ class PostPage extends React.Component {
                             </div>
                             <textarea name="postContent" className="form-control input_user" value={this.state.postContent} onChange={this.handlePostContentChange} placeholder="Write a post here...." />
                         </div>
-                        <Button className='post-submit-button' onClick={this.submitPost} disabled={this.state.posting} >
+                <form onSubmit={this.addPostWithAttachmentIfAny} className='image-upload-form'>
+
+                        <input type="file" multiple="multiple" name='files' id="files" className='form-control image-input' onChange={this.handleFileChange} placeholder='Update display picture' /> <p/>
+                </form>
+                        <Button className='post-submit-button' onClick={this.addPostWithAttachmentIfAny} disabled={this.state.posting} >
                             {this.state.posting ? <Spinner
                                 as="span"
                                 animation="grow"
