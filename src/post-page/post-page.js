@@ -153,7 +153,7 @@ class PostPage extends React.Component {
                         </div>
                 <form onSubmit={this.addPostWithAttachmentIfAny} className='image-upload-form'>
 
-                        <input type="file" multiple="multiple" name='files' id="files" className='form-control image-input' onChange={this.handleFileChange} placeholder='Update display picture' /> <p/>
+                        <input type="file" multiple="multiple" name='files' accept="video/mp4,image/png,image/jpeg" id="files" className='form-control image-input' onChange={this.handleFileChange} placeholder='Update display picture' /> <p/>
                 </form>
                         <Button className='post-submit-button' onClick={this.addPostWithAttachmentIfAny} disabled={this.state.posting} >
                             {this.state.posting ? <Spinner

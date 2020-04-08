@@ -43,3 +43,6 @@
     display: block;
     margin-top: 20px;
 }
+.w-100 {
+    max-height: 500px !important;
+}
