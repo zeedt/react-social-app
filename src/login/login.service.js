@@ -1,4 +1,5 @@
 import axios from 'axios'
+import queryString from 'query-string'
 
 const LOGIN_URL = `${process.env.REACT_APP_SOCIAL_APP_BASE_URL}oauth/token?grant_type=password`;
 const SIGNUP_URL = `${process.env.REACT_APP_SOCIAL_APP_BASE_URL}signup`;
@@ -10,9 +11,9 @@ const login = async (loginData) => {
     try {
         loginData.grant_type = 'password';
         console.log('login data ' + JSON.stringify(loginData));
-        var response = await axios.post(LOGIN_URL, loginData, {
+        var response = await axios.post(LOGIN_URL, queryString.stringify(loginData), {
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
                 'Authorization': getBase64StringFromClientCredentials()
             }
         });

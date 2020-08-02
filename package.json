@@ -18,6 +18,7 @@
     "jquery": "^3.4.1",
     "lodash.debounce": "^4.0.8",
     "popper.js": "^1.16.1",
+    "query-string": "^6.12.1",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^16.12.0",
@@ -31,8 +32,8 @@
     "socket.io-client": "^2.3.0"
   },
   "scripts": {
-    "start": "REACT_APP_SOCIAL_APP_BASE_URL=http://localhost:3001/ REACT_APP_SOCIAL_APP_S3_URL=https://social-app-bucket1.s3.amazonaws.com/social-app-images/ react-scripts start",
-    "build": "react-scripts build",
+    "start": "REACT_APP_SOCIAL_APP_BASE_URL=http://localhost:3004/ REACT_APP_SOCIAL_APP_S3_URL=https://social-app-bucket1.s3.amazonaws.com/social-app-images/ react-scripts start",
+    "build": "REACT_APP_SOCIAL_APP_BASE_URL=http://localhost:3004/ REACT_APP_SOCIAL_APP_S3_URL=https://social-app-bucket1.s3.amazonaws.com/social-app-images/ react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

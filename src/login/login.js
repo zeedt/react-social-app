@@ -40,14 +40,14 @@ class Login extends React.Component {
         e.preventDefault();
         console.dir(this.state);
         const response = await LoginService.login(this.state);
-        if (response.access_token && response.access_token.token_string) {
-            window.localStorage.setItem('access_token', response.access_token.token_string);
-            window.localStorage.setItem('username', response.access_token.user.username);
-            window.localStorage.setItem('first_name', response.access_token.user.first_name);
-            window.localStorage.setItem('last_name', response.access_token.user.last_name);
-            window.localStorage.setItem('email', response.access_token.user.email);
-            window.localStorage.setItem('display_picture', response.access_token.user.display_picture);
-            window.localStorage.setItem('gender', response.access_token.user.gender);
+        if (response.access_token) {
+            window.localStorage.setItem('access_token', response.access_token);
+            window.localStorage.setItem('username', response.properties.username);
+            window.localStorage.setItem('first_name', response.properties.first_name);
+            window.localStorage.setItem('last_name', response.properties.last_name);
+            window.localStorage.setItem('email', response.properties.email);
+            window.localStorage.setItem('display_picture', response.properties.display_picture);
+            window.localStorage.setItem('gender', response.properties.gender);
             // store.dispatch({type:'SET_CURRENT_USER', data : response.access_token.user});
             // this.props.history.push('/home')
             window.location.href = '/'

@@ -9,12 +9,14 @@ const getHeader = () => {
 }
 
 const checkErrorAndRedirectIfNecessary = (error) => {
+    console.error(error)
     try{
         if (error.response.status == 401) {
             localStorage.removeItem('access_token');
             window.location.replace('/login');
         }
     } catch(error) {
+        console.error(error)
         console.log("Error occurred during redirection");
         window.location.replace('/login');
     }
@@ -37,6 +39,7 @@ const ReduxThunkFunctions = {
                 }).then(res=> {
                     dispatch({type : "RECEIVE_POSTS", data:res.data})
                 }).catch((error, data)=> {
+                    console.log(error)
                     checkErrorAndRedirectIfNecessary(error);
                     dispatch({type: ReducerActions.DONE_LOADING_POSTS})
                 });

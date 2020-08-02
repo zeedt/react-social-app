@@ -54,7 +54,7 @@ const PostItem = ({ post }) => {
                     </div>
 
                     <div className="attachment-div  col-md-12">
-                        {post.attachments != null && JSON.parse(post.attachments).length > 0 &&
+                        {post.attachments != null && post.attachments != '' && JSON.parse(post.attachments).length > 0 &&
                             // JSON.parse(post.attachments).map(attachment =>
                             // <img src={attachment} />
                             <div>
